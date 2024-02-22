@@ -1,2 +1,2 @@
 # LeetCode
-LeetCode
+consistency is the key
