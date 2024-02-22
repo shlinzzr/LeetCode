@@ -1,0 +1,9 @@
+// https://leetcode.com/problems/swap-salary
+
+# Write your MySQL query statement below
+
+
+# update sex="m" from Salary where sex = "f";
+
+UPDATE salary
+SET sex = IF(sex = 'm', 'f', 'm');
