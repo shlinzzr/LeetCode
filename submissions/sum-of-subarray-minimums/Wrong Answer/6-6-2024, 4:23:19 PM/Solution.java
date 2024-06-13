@@ -1,0 +1,56 @@
+// https://leetcode.com/problems/sum-of-subarray-minimums
+
+class Solution {
+    public int sumSubarrayMins(int[] arr) {
+
+        int len = arr.length;
+
+     
+
+        int[] nextSmaller = new int[len];
+        Arrays.fill(nextSmaller, len);
+        Stack<Integer> st = new Stack<>();
+        for(int i=0; i<len; i++){
+            while(!st.isEmpty()&& arr[st.peek()]>arr[i]){
+                nextSmaller[st.pop()]=i;
+            }
+            st.push(i);
+        }
+
+        st.clear();
+        int[] prevSmaller = new int[len];
+        Arrays.fill(prevSmaller, -1);
+        for(int i=len-1; i>=0; i--){
+            while(!st.isEmpty() && arr[i]<arr[st.peek()]){
+                prevSmaller[st.pop()] = i;
+            }
+            st.push(i);
+        }
+
+        int M = (int)1e9+7;
+        long res =0L ;
+        for(int i=0; i<len; i++){
+            // for i
+            int left = prevSmaller[i]==-1 ? i : prevSmaller[i]+1;
+            int right = nextSmaller[i]==len ? i : nextSmaller[i]-1;
+
+            
+            res += (right-left+1)*(long)arr[i]%M;
+        }
+
+        return (int)res;
+
+
+
+        // find all subarray
+        // b-f
+        // for(int i=0; i<len; i++){
+        //     for(int j=i; j<len; j++){
+        //         // iter all to find min of [i, j] ...
+        //     }
+        // }
+
+
+        
+    }
+}

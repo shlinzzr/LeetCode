@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/duplicate-emails
+
+# Write your MySQL query statement below
+
+
+# sol1:
+select distinct p1.email from person p1, person p2 
+where p1.email = p2.email and p1.id!=p2.id;
+
+
+# sol2:
+# select email from person group by email 
+# having count(email)>1;

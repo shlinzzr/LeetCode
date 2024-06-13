@@ -1,0 +1,49 @@
+// https://leetcode.com/problems/shortest-palindrome
+
+class Solution {
+    public String shortestPalindrome(String s) {
+        
+        int len = s.length();
+        
+        for(int i=len/2;i>=0; i--){
+            
+            
+            String even = extend(s, i, i+1);
+            if(even!=null)
+                return even;
+            
+            String odd = extend(s, i, i);    
+            if(odd!=null)
+                return odd;
+            
+        }
+           
+        
+        return "";
+        
+    }
+    
+    private String extend(String s, int st, int ed){
+        
+        while(st>=0 && ed<s.length() &&s.charAt(st)==s.charAt(ed)){
+            st--;
+            ed++;
+            
+        }
+        if(st>=0)
+            return null;
+        
+         
+        StringBuilder sb = new StringBuilder();
+        while(ed<s.length()){
+            
+            sb.insert(0, s.charAt(ed));
+            ed++;
+        }
+        
+        sb.append(s);
+        return sb.toString();
+            
+        
+    }
+}

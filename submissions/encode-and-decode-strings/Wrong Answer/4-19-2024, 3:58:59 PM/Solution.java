@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/encode-and-decode-strings
+
+public class Codec {
+
+    // Encodes a list of strings to a single string.
+    public String encode(List<String> strs) {
+        StringBuilder sb  = new StringBuilder();
+
+        for(int i=0; i<strs.size(); i++){
+            String s = strs.get(i);
+            if(i!=0) sb.append("##_##");
+            sb.append(s);
+        }
+
+        return sb.toString();
+    }
+
+    // Decodes a single string to a list of strings.
+    public List<String> decode(String s) {
+        return Arrays.asList(s.split("##_##"));
+    }
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec = new Codec();
+// codec.decode(codec.encode(strs));

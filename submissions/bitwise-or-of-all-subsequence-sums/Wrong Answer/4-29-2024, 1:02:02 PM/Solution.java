@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/bitwise-or-of-all-subsequence-sums
+
+class Solution {
+    public long subsequenceSumOr(int[] nums) {
+        int len = nums.length;
+
+
+        long res = 0L;
+        int sum = 0;
+
+        int or = 0;
+        for(int n : nums){
+            sum += n;
+            or = (or|n);
+        }
+
+        return or | sum;
+        
+    }
+}

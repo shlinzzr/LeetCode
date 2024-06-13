@@ -1,0 +1,72 @@
+// https://leetcode.com/problems/minimum-window-substring
+
+class Solution {
+    
+    // solution 1 use isValid to check map, run arr length of 52 everytime ==> 256ms
+    // solution 2 use a constant "wordLen" to check if meet length "n" ==> reduce to 15ms
+    
+    public String minWindow(String s, String t) {
+        
+        if(s.equals(t))
+            return s;
+        
+        
+        int[] arr = new int[52];
+        
+        int m = s.length();
+        int n = t.length();
+        
+        HashMap<Character, Integer> map = new HashMap<>();
+        
+        for(char ch : t.toCharArray()){
+            map.put(ch, map.getOrDefault(ch,0)+1);
+        }
+        
+        String res = "";
+        int min = Integer.MAX_VALUE;
+        
+        int st=0;
+        for(int ed=0; ed<m; ed++){
+            char ch = s.charAt(ed);
+            if(map.containsKey(ch)){
+                map.put(ch, map.get(ch)-1);
+            }
+            
+            if(ed-st+1<n)
+                continue;
+            
+            
+            
+            while(st<=ed && isValid(map)){
+                
+                if(ed-st+1<min){
+                    min = Math.min(min, ed-st+1);
+                    res = s.substring(st, ed+1);
+                }
+                char chh = s.charAt(st);
+                
+                if(map.containsKey(chh)){
+                    map.put(chh, map.get(chh)+1);
+                }
+                st++;
+            }
+            
+        }
+        
+        return res;
+        
+    }
+    
+    
+    private boolean isValid(HashMap<Character, Integer> map){
+        
+        for(Map.Entry<Character, Integer> en : map.entrySet()){
+            if(en.getValue()>0)
+                return false;                
+        }
+        
+        return true;
+        
+    }
+    
+}

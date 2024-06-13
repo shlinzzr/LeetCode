@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/climbing-stairs
+
+class Solution {
+    public int climbStairs(int n) {
+        if(n<=3)
+            return n;
+        
+        int a=1;
+        int b=2;
+        int c=3;
+        for(int i=0; i<n; i++){
+            c=a+b;
+            a=b;
+            b=c;
+        }
+        return c;
+    }
+}

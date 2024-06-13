@@ -1,0 +1,63 @@
+// https://leetcode.com/problems/build-binary-expression-tree-from-infix-expression
+
+/**
+ * Definition for a binary tree node.
+ * class Node {
+ *     char val;
+ *     Node left;
+ *     Node right;
+ *     Node() {this.val = ' ';}
+ *     Node(char val) { this.val = val; }
+ *     Node(char val, Node left, Node right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+// ref : https://leetcode.com/problems/build-binary-expression-tree-from-infix-expression/discuss/878008/Java-O(n)-solution-with-single-stack
+
+class Solution {
+    public Node expTree(String s) {
+        s = '(' + s + ')';
+        Stack<Node> stack = new Stack<>();
+         
+        for (char c : s.toCharArray()) {
+            if (!Character.isDigit(c) && c != '(') {
+                Node right = stack.pop();
+                if (c == '*' || c == '/') {
+                    if (stack.peek().val == '*' || stack.peek().val == '/') {
+                        Node ops = stack.pop();
+                        Node left = stack.pop();
+                        ops.left = left;
+                        ops.right = right;
+                        right = ops;
+                    }
+                } else {
+                    while (stack.peek().val != '(') {
+                        Node ops = stack.pop();
+                        Node left = stack.pop();
+                        ops.left = left;
+                        ops.right = right;
+                        right = ops;
+                    }
+                    if (c == ')') {
+                        stack.pop();
+                    }
+                }
+                stack.push(right);
+            }
+            
+            if (c != ')') {
+                stack.push(new Node(c));
+            }
+            
+            // for(Node nd : stack){
+            //     System.out.print(nd.val + ", ");
+            // }
+            // System.out.println();
+        }
+        return stack.pop();
+    }
+}

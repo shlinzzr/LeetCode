@@ -1,0 +1,56 @@
+// https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies
+
+class Solution {
+    //  O(V + E) == O(recipes.length + supplies.length + sum(ingredients[i].size)) time and space.
+    public List<String> findAllRecipes(String[] recipes, List<List<String>> ingredients, String[] supplies) {
+        
+         // Recipes and supplies are nodes in the graph. The ingredients list gives us the edges.
+        Map<String, List<String>> graph = new HashMap<>();  
+        Map<String, Integer> inDegree = new HashMap<>();  
+        
+        // Needed so that later, while processing nodes during the topological sort,  we only add recipes to the result.
+        Set<String> recipesSet = new HashSet<>();   
+        
+        // Add supply nodes to the graph.
+        for (String sup : supplies) {
+            graph.put(sup, new ArrayList<>());
+            inDegree.put(sup, 0);
+        }
+        
+        // Add recipe nodes to the graph.
+        for (String rcp : recipes) {
+            graph.put(rcp, new ArrayList<>());
+            inDegree.put(rcp, 0);
+            recipesSet.add(rcp);
+        }
+        
+        // Add edges to the graph.
+        for (int i = 0; i < ingredients.size(); ++i) {
+            for (String ing : ingredients.get(i)) {
+                graph.putIfAbsent(ing, new ArrayList<>());   
+                graph.get(ing).add(recipes[i]); 
+            }
+            inDegree.put(recipes[i], ingredients.get(i).size());   
+        }
+        
+        // Standard topological sort
+        List<String> result = new ArrayList<>();
+        Deque<String> queue = new ArrayDeque<>();
+        
+        for (String currNode : inDegree.keySet()) {
+            if (inDegree.get(currNode) == 0) queue.addLast(currNode);
+        }
+        
+        while (queue.size() > 0) {
+            String currNode = queue.removeFirst();
+            if (recipesSet.contains(currNode)) {
+                result.add(currNode);   
+            }
+            for (String adjacentNode : graph.get(currNode)) {
+                inDegree.put(adjacentNode, inDegree.get(adjacentNode) - 1);
+                if (inDegree.get(adjacentNode) == 0) queue.addLast(adjacentNode);
+            }
+        }
+        return result;
+    }
+}
